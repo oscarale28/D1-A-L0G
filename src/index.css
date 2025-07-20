@@ -1,0 +1,275 @@
+@import url('https://fonts.googleapis.com/css2?family=Oxanium:wght@200..800&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Audiowide&display=swap');
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  font-family: 'Oxanium', sans-serif;
+  --font-display: 'Audiowide', cursive;
+  --background: rgb(240, 240, 240);
+  --foreground: rgb(45, 55, 72);
+  --card: rgb(255, 255, 255);
+  --card-foreground: rgb(45, 55, 72);
+  --popover: rgb(255, 255, 255);
+  --popover-foreground: rgb(45, 55, 72);
+  --primary: rgb(45, 212, 191);
+  --primary-foreground: rgb(0, 0, 0);
+  --secondary: rgb(160, 174, 192);
+  --secondary-foreground: rgb(45, 55, 72);
+  --muted: rgb(237, 242, 247);
+  --muted-foreground: rgb(113, 128, 150);
+  --accent: rgb(100, 255, 218);
+  --accent-foreground: rgb(0, 0, 0);
+  --destructive: rgb(229, 57, 53);
+  --destructive-foreground: rgb(255, 255, 255);
+  --border: rgb(45, 212, 191);
+  --input: rgb(226, 232, 240);
+  --ring: rgb(45, 212, 191);
+  --chart-1: rgb(41, 171, 226);
+  --chart-2: rgb(142, 36, 170);
+  --chart-3: rgb(216, 27, 96);
+  --chart-4: rgb(30, 136, 229);
+  --chart-5: rgb(0, 172, 193);
+  --sidebar: rgb(247, 250, 252);
+  --sidebar-foreground: rgb(45, 55, 72);
+  --sidebar-primary: rgb(45, 212, 191);
+  --sidebar-primary-foreground: rgb(0, 0, 0);
+  --sidebar-accent: rgb(100, 255, 218);
+  --sidebar-accent-foreground: rgb(0, 0, 0);
+  --sidebar-border: rgb(45, 212, 191);
+  --sidebar-ring: rgb(45, 212, 191);
+  --radius: 0rem;
+  --shadow-2xs: 0rem 0rem 0rem 0rem hsl(0 0% 0% / 0.00);
+  --shadow-xs: 0rem 0rem 0rem 0rem hsl(0 0% 0% / 0.00);
+  --shadow-sm: 0rem 0rem 0rem 0rem hsl(0 0% 0% / 0.00), 0rem 1px 2px -1px hsl(0 0% 0% / 0.00);
+  --shadow: 0rem 0rem 0rem 0rem hsl(0 0% 0% / 0.00), 0rem 1px 2px -1px hsl(0 0% 0% / 0.00);
+  --shadow-md: 0rem 0rem 0rem 0rem hsl(0 0% 0% / 0.00), 0rem 2px 4px -1px hsl(0 0% 0% / 0.00);
+  --shadow-lg: 0rem 0rem 0rem 0rem hsl(0 0% 0% / 0.00), 0rem 4px 6px -1px hsl(0 0% 0% / 0.00);
+  --shadow-xl: 0rem 0rem 0rem 0rem hsl(0 0% 0% / 0.00), 0rem 8px 10px -1px hsl(0 0% 0% / 0.00);
+  --shadow-2xl: 0rem 0rem 0rem 0rem hsl(0 0% 0% / 0.00);
+  --tracking-normal: 0.05em;
+  --spacing: 0.25rem;
+}
+
+.dark {
+  --font-display: 'Audiowide', cursive;
+  --background: rgb(11, 14, 17);
+  --foreground: rgb(203, 213, 225);
+  --card: rgb(30, 41, 59);
+  --card-foreground: rgb(148, 163, 184);
+  --popover: rgb(30, 41, 59);
+  --popover-foreground: rgb(203, 213, 225);
+  --primary: rgb(45, 212, 191);
+  --primary-foreground: rgb(0, 0, 0);
+  --secondary: rgb(82, 82, 91);
+  --secondary-foreground: rgb(248, 250, 252);
+  --muted: rgb(51, 65, 85);
+  --muted-foreground: rgb(100, 116, 139);
+  --accent: rgb(100, 255, 218);
+  --accent-foreground: rgb(0, 0, 0);
+  --destructive: rgb(239, 68, 68);
+  --destructive-foreground: rgb(248, 250, 252);
+  --border: rgb(45, 212, 191);
+  --input: rgb(51, 65, 85);
+  --ring: rgb(45, 212, 191);
+  --chart-1: rgb(41, 171, 226);
+  --chart-2: rgb(142, 36, 170);
+  --chart-3: rgb(216, 27, 96);
+  --chart-4: rgb(30, 136, 229);
+  --chart-5: rgb(0, 172, 193);
+  --sidebar: rgb(17, 24, 39);
+  --sidebar-foreground: rgb(203, 213, 225);
+  --sidebar-primary: rgb(45, 212, 191);
+  --sidebar-primary-foreground: rgb(0, 0, 0);
+  --sidebar-accent: rgb(100, 255, 218);
+  --sidebar-accent-foreground: rgb(0, 0, 0);
+  --sidebar-border: rgb(45, 212, 191);
+  --sidebar-ring: rgb(45, 212, 191);
+  --radius: 0rem;
+  --shadow-2xs: 0rem 0rem 0rem 0rem hsl(0 0% 0% / 0.00);
+  --shadow-xs: 0rem 0rem 0rem 0rem hsl(0 0% 0% / 0.00);
+  --shadow-sm: 0rem 0rem 0rem 0rem hsl(0 0% 0% / 0.00), 0rem 1px 2px -1px hsl(0 0% 0% / 0.00);
+  --shadow: 0rem 0rem 0rem 0rem hsl(0 0% 0% / 0.00), 0rem 1px 2px -1px hsl(0 0% 0% / 0.00);
+  --shadow-md: 0rem 0rem 0rem 0rem hsl(0 0% 0% / 0.00), 0rem 2px 4px -1px hsl(0 0% 0% / 0.00);
+  --shadow-lg: 0rem 0rem 0rem 0rem hsl(0 0% 0% / 0.00), 0rem 4px 6px -1px hsl(0 0% 0% / 0.00);
+  --shadow-xl: 0rem 0rem 0rem 0rem hsl(0 0% 0% / 0.00), 0rem 8px 10px -1px hsl(0 0% 0% / 0.00);
+  --shadow-2xl: 0rem 0rem 0rem 0rem hsl(0 0% 0% / 0.00);
+}
+
+@theme inline {
+  --font-display: var(--font-display);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+
+  --shadow-2xs: var(--shadow-2xs);
+  --shadow-xs: var(--shadow-xs);
+  --shadow-sm: var(--shadow-sm);
+  --shadow: var(--shadow);
+  --shadow-md: var(--shadow-md);
+  --shadow-lg: var(--shadow-lg);
+  --shadow-xl: var(--shadow-xl);
+  --shadow-2xl: var(--shadow-2xl);
+
+  --tracking-tighter: calc(var(--tracking-normal) - 0.05em);
+  --tracking-tight: calc(var(--tracking-normal) - 0.025em);
+  --tracking-normal: var(--tracking-normal);
+  --tracking-wide: calc(var(--tracking-normal) + 0.025em);
+  --tracking-wider: calc(var(--tracking-normal) + 0.05em);
+  --tracking-widest: calc(var(--tracking-normal) + 0.1em);
+}
+
+span {
+  font-family: 'Oxanium', sans-serif;
+}
+
+body {
+  letter-spacing: var(--tracking-normal);
+}
+
+/* CRT EFFECT SETTINGS */
+.crt-container {
+  position: relative;
+  overflow: hidden;
+}
+
+/* Moving scanline */
+.crt-container::before {
+  content: '';
+  display: block;
+  pointer-events: none;
+  position: absolute;
+  width: 100%;
+  height: 2px;
+  background: rgba(0, 0, 0, 0.3);
+  opacity: 0.75;
+  animation: scanline 5s linear infinite;
+  z-index: 100;
+}
+
+/* Static scanlines */
+.crt-container::after {
+  content: '';
+  display: block;
+  pointer-events: none;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  opacity: 0.5;
+  background: linear-gradient(to bottom,
+      transparent 50%,
+      rgba(0, 0, 0, 0.3) 51%);
+  background-size: 100% 4px;
+  animation: scanlines 5s steps(60) infinite;
+  z-index: 100;
+}
+
+/* Animations */
+@keyframes scanline {
+  0% {
+    transform: translate3d(0, 200000%, 0);
+  }
+}
+
+@keyframes scanlines {
+  0% {
+    background-position: 0 50%;
+  }
+}
+
+.status-bar::after {
+  content: '';
+  position: absolute;
+  bottom: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 40%;
+  height: 20px;
+  background: var(--color-cyan-950);
+  clip-path: polygon(0 0, 100% 0, 90% 100%, 10% 100%);
+  z-index: 10;
+}
+
+.toggle-sidebar {
+  clip-path: polygon(0px 0px, 40% 0%, 100% 10px, 100% 54px, 40% 100%, 0% 100%);
+}
+
+.chat-card {
+  clip-path: polygon(16px 0px, 94% 0%, 100% -16px, 100% calc(100% - 16px), calc(100% - 16px) 100%, 0px 100%, 0px 0px);
+}
+
+.chat-card::after {
+  content: '';
+  position: absolute;
+  top: -16px;
+  right: 0px;
+  width: 20px;
+  height: 16px;
+  background: inherit;
+  clip-path: polygon(100% 0, 100% 100%, 0 100%);
+  z-index: 10;
+}
+
+.message-input::before {
+  content: '';
+  position: absolute;
+  top: -16px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 40%;
+  height: 20px;
+  background-color: var(--color-cyan-950);
+  clip-path: polygon(10% 0, 90% 0, 100% 100%, 0 100%);
+}
+
+.message-submit {
+  clip-path: polygon(12px 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%, 0 12px)
+}
+
+.msg-bubble-user {
+  @apply bg-cyan-900/40 text-cyan-400 border border-cyan-900/30;
+  clip-path: polygon(0 0, 0 calc(100% - 12px), 12px 100%, 100% 100%, 100% 12px, calc(100% - 12px) 0);
+}
+
+.msg-bubble-character {
+  @apply bg-gray-800/40 text-gray-200 border border-gray-700/30;
+  clip-path: polygon(0 0, 0 calc(100% - 12px), 12px 100%, 100% 100%, 100% 12px, calc(100% - 12px) 0);
+}
