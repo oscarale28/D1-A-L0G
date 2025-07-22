@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, use, useState } from "react";
 import type { Character } from "../types";
 
 interface CharacterContextType {
@@ -23,7 +23,7 @@ export const CharacterProvider = ({ children }: { children: React.ReactNode }) =
 }
 
 export const useCharacter = () => {
-  const context = useContext(CharacterContext);
+  const context = use(CharacterContext);
   if (context === undefined) {
     throw new Error("useCharacter must be used within a CharacterProvider");
   }

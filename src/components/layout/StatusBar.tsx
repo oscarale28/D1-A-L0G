@@ -1,6 +1,8 @@
 import { Battery, Signal } from 'lucide-react'
+import Clock from '../ui/Clock';
 
 const StatusBar = () => {
+
   return (
     <div
       className="status-bar relative h-15 p-3 bg-cyan-950 border-cyan-900 flex items-center justify-between"
@@ -20,11 +22,7 @@ const StatusBar = () => {
 
 
       <div className="flex flex-col gap-2 items-end md:flex-row md:items-center">
-        <div className="text-xs text-gray-400">
-          {new Date().toLocaleTimeString("en-US", {
-            hour12: false
-          })}{" "}
-        </div>
+        <Clock />
         <div className="flex items-center space-x-3">
           <div className="flex items-center space-x-1">
             <Signal className="w-3 h-3 text-cyan-400" />

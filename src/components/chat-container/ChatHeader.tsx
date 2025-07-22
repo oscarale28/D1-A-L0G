@@ -1,10 +1,13 @@
 import type { Character } from "@/lib/types"
+import { useRandomStatus } from "@/lib/hooks/useRandomStatus"
 
 interface ChatHeaderProps {
   character: Character | null
 }
 
 const ChatHeader = ({ character }: ChatHeaderProps) => {
+  const { status, statusColor, statusTextColor } = useRandomStatus();
+
   if (!character) {
     return null
   }
@@ -23,21 +26,15 @@ const ChatHeader = ({ character }: ChatHeaderProps) => {
           <h2 className="text-lg font-bold text-cyan-500">{character.name}</h2>
         </div>
         <div className="flex items-center gap-x-1">
-          {/**<div
-            className={`w-2 h-2 ${character.status === 'online'
-              ? 'bg-green-400'
-              : 'bg-yellow-400'
-              }`}
+          <div
+            className={`w-2 h-2 ${statusColor}`}
             style={{
               clipPath: "polygon(50% 0%, 0% 100%, 100% 100%)",
             }}
           ></div>
-          <span className={`text-xs ${character.status === 'online'
-            ? ' text-green-400'
-            : 'text-yellow-400'
-            }`}>
-            {character.status}
-          </span>**/}
+          <span className={`text-xs ${statusTextColor}`}>
+            {status}
+          </span>
         </div>
       </div>
     </div>

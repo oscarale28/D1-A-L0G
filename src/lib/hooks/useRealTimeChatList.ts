@@ -1,60 +1,63 @@
 
 import { useState, useEffect } from 'react';
 import { onSnapshot, QuerySnapshot, Timestamp, type DocumentData } from 'firebase/firestore';
-import { getCombinedChatListQuery, getCharacters, type CombinedChatItem } from '../services/firestore';
+import { getCombinedChatListQuery, type CombinedChatItem } from '../services/firestore';
 import { useAuth } from '../providers/AuthProvider';
-import type { Character, Chat } from '../types';
+import type { Chat } from '../types';
+import { useCharacters } from './useCharacters';
 
 export const useRealTimeChatList = () => {
   const { user } = useAuth();
+  const { data: characters = [], isLoading: charactersLoading, error: charactersError } = useCharacters();
   const [chatList, setChatList] = useState<CombinedChatItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<Error | null>(null);
-  const [allCharacters, setAllCharacters] = useState<Character[]>([]);
+  const [optimisticUpdates, setOptimisticUpdates] = useState<Map<string, { text: string; timestamp: number }>>(new Map());
 
   useEffect(() => {
-    const fetchCharacters = async () => {
-      console.log("fetch characters")
-      try {
-        const characters = await getCharacters();
-        setAllCharacters(characters);
-      } catch (err: unknown) {
-        if (err instanceof Error) {
-          setError(err)
-        } else {
-          setError(new Error('Unknown error occurred'))
-        }
-        setLoading(false);
-      }
-    };
-
-    fetchCharacters();
-  }, []);
-
-  useEffect(() => {
-    if (!user || allCharacters.length === 0) {
+    if (!user || characters.length === 0) {
       setLoading(false);
       return;
     }
-
-    console.log("query chat list")
 
     const query = getCombinedChatListQuery(user.uid);
     const unsubscribe = onSnapshot(query, (snapshot: QuerySnapshot<DocumentData>) => {
       const userChats = snapshot.docs.map(doc => {
         const data = doc.data() as Chat;
-        // Handle pending server timestamps for updatedAt
-        const updatedAt = data.updatedAt instanceof Timestamp ? data.updatedAt : (data.updatedAt as any)?._methodName === 'serverTimestamp' ? Timestamp.fromMillis(Date.now()) : data.updatedAt;
-        return { ...data, updatedAt: updatedAt };
+        let updatedAt = data.updatedAt;
+        if (!(updatedAt instanceof Timestamp)) {
+          if (
+            typeof updatedAt === 'object' &&
+            updatedAt !== null &&
+            '_methodName' in updatedAt &&
+            (updatedAt as { _methodName?: string })._methodName === 'serverTimestamp'
+          ) {
+            updatedAt = Timestamp.fromMillis(Date.now());
+          }
+        }
+        return { ...data, updatedAt };
       });
 
       const chatsByCharacterId = new Map(userChats.map(chat => [chat.characterId, chat]));
 
-      const combinedList = allCharacters
-        .map(character => ({
-          character,
-          chat: chatsByCharacterId.get(character.id) || null,
-        }))
+      const combinedList = characters
+        .map(character => {
+          const chat = chatsByCharacterId.get(character.id) || null;
+          const optimisticUpdate = optimisticUpdates.get(character.id);
+
+          if (optimisticUpdate && chat) {
+            return {
+              character,
+              chat: {
+                ...chat,
+                lastMessageText: optimisticUpdate.text,
+                updatedAt: Timestamp.fromMillis(optimisticUpdate.timestamp),
+              },
+            };
+          }
+
+          return { character, chat };
+        })
         .sort((a, b) => {
           const timeA = a.chat?.updatedAt instanceof Timestamp ? a.chat.updatedAt.toMillis() : 0;
           const timeB = b.chat?.updatedAt instanceof Timestamp ? b.chat.updatedAt.toMillis() : 0;
@@ -80,9 +83,32 @@ export const useRealTimeChatList = () => {
     });
 
     return () => unsubscribe();
-  }, [user, allCharacters]);
+  }, [user, characters, optimisticUpdates]);
 
-  return { chatList, loading, error };
+  // Function to add optimistic update
+  const addOptimisticUpdate = (characterId: string, text: string) => {
+    setOptimisticUpdates(prev => new Map(prev).set(characterId, {
+      text,
+      timestamp: Date.now()
+    }));
+  };
+
+  // Function to clear optimistic update (called when server confirms)
+  const clearOptimisticUpdate = (characterId: string) => {
+    setOptimisticUpdates(prev => {
+      const newMap = new Map(prev);
+      newMap.delete(characterId);
+      return newMap;
+    });
+  };
+
+  return {
+    chatList,
+    loading: charactersLoading || loading,
+    error: charactersError || error,
+    addOptimisticUpdate,
+    clearOptimisticUpdate
+  };
 };
 
 

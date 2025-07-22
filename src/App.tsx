@@ -6,14 +6,15 @@ import ChatsList from './components/chats-list/ChatsListContainer';
 import { useAuth } from './lib/providers/AuthProvider';
 import WelcomeScreen from './components/auth/WelcomeScreen';
 import { CharacterProvider } from './lib/providers/CharacterProvider';
-import ProgressBar from './components/ui/ProgressBar';
 import { ChatListProvider } from './lib/providers/ChatListProvider';
 
 function App() {
   const { user, loading } = useAuth();
 
   if (loading) {
-    return <ProgressBar />;
+    return <div className="h-screen flex items-center justify-center">
+      <div className='progress-bar' />
+    </div>;
   }
 
   if (!user) {

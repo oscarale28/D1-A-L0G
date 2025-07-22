@@ -4,11 +4,13 @@ import { Timestamp } from "firebase/firestore";
 export interface Character {
   id: string;
   name: string;
-  imageUrl: string; // Cambiado de imagePath a imageUrl
+  imageUrl: string;
   prompt: string;
   color?: string;
-  status?: string;
+  status?: CharacterStatus;
 }
+
+export type CharacterStatus = 'online' | 'away' | 'busy' | 'offline';
 
 export interface Chat {
   id: string;
@@ -16,13 +18,13 @@ export interface Chat {
   characterId: string;
   createdAt: Timestamp;
   updatedAt: Timestamp;
-  lastMessageText?: string; // Nuevo campo para el texto del último mensaje
-  lastMessageTimestamp?: Timestamp; // Nuevo campo para el timestamp del último mensaje
+  lastMessageText?: string;
+  lastMessageTimestamp?: Timestamp;
 }
 
 export interface Message {
   id: string;
-  senderId: string; // Can be a user UID or a character ID
+  senderId: string;
   text: string;
   timestamp: Timestamp;
 }

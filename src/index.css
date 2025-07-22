@@ -321,3 +321,37 @@ body {
     background-position: calc(0*100%/5) 0%, calc(1*100%/5) 100%, calc(2*100%/5) 0%, calc(3*100%/5) 100%, calc(4*100%/5) 0%, calc(5*100%/5) 100%
   }
 }
+
+/* Skeleton Loading Styles */
+.chat-card-skeleton {
+  clip-path: polygon(16px 0px, 94% 0%, 100% -16px, 100% calc(100% - 16px), calc(100% - 16px) 100%, 0px 100%, 0px 0px);
+}
+
+.chat-card-skeleton::after {
+  content: '';
+  position: absolute;
+  top: -16px;
+  right: 0px;
+  width: 20px;
+  height: 16px;
+  background: inherit;
+  clip-path: polygon(100% 0, 100% 100%, 0 100%);
+  z-index: 10;
+}
+
+/* Custom skeleton animation */
+@keyframes skeleton-pulse {
+
+  0%,
+  100% {
+    opacity: 0.3;
+  }
+
+  50% {
+    opacity: 0.6;
+  }
+}
+
+.chat-card-skeleton .animate-pulse {
+  animation: skeleton-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
