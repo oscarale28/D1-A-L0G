@@ -260,7 +260,8 @@ body {
   clip-path: polygon(10% 0, 90% 0, 100% 100%, 0 100%);
 }
 
-.message-submit {
+.message-submit,
+.welcome-button {
   clip-path: polygon(12px 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%, 0 12px)
 }
 
@@ -272,4 +273,51 @@ body {
 .msg-bubble-character {
   @apply bg-gray-800/40 text-gray-200 border border-gray-700/30;
   clip-path: polygon(0 0, 0 calc(100% - 12px), 12px 100%, 100% 100%, 100% 12px, calc(100% - 12px) 0);
+}
+
+/* HTML: <div class="loader"></div> */
+.progress-bar {
+  width: 120px;
+  height: 20px;
+  background:
+    linear-gradient(var(--color-cyan-950) 50%, var(--color-cyan-950) 0),
+    linear-gradient(var(--color-cyan-900) 50%, var(--color-cyan-950) 0),
+    linear-gradient(var(--color-cyan-950) 50%, var(--color-cyan-900) 0),
+    linear-gradient(var(--color-cyan-900) 50%, var(--color-cyan-950) 0),
+    linear-gradient(var(--color-cyan-950) 50%, var(--color-cyan-900) 0),
+    linear-gradient(var(--color-cyan-900) 50%, var(--color-cyan-950) 0) #ddd;
+  background-size: calc(100%/6 + 1px) 200%;
+  background-repeat: no-repeat;
+  animation: l12 2s infinite;
+  clip-path: polygon(4px 0, 100% 0, 100% calc(100% - 4px), calc(100% - 4px) 100%, 0 100%, 0 4px)
+}
+
+@keyframes l12 {
+  0% {
+    background-position: calc(0*100%/5) 100%, calc(1*100%/5) 0%, calc(2*100%/5) 100%, calc(3*100%/5) 0%, calc(4*100%/5) 100%, calc(5*100%/5) 0%
+  }
+
+  16.67% {
+    background-position: calc(0*100%/5) 0%, calc(1*100%/5) 0%, calc(2*100%/5) 100%, calc(3*100%/5) 0%, calc(4*100%/5) 100%, calc(5*100%/5) 0%
+  }
+
+  33.33% {
+    background-position: calc(0*100%/5) 0%, calc(1*100%/5) 100%, calc(2*100%/5) 100%, calc(3*100%/5) 0%, calc(4*100%/5) 100%, calc(5*100%/5) 0%
+  }
+
+  50% {
+    background-position: calc(0*100%/5) 0%, calc(1*100%/5) 100%, calc(2*100%/5) 0%, calc(3*100%/5) 0%, calc(4*100%/5) 100%, calc(5*100%/5) 0%
+  }
+
+  66.67% {
+    background-position: calc(0*100%/5) 0%, calc(1*100%/5) 100%, calc(2*100%/5) 0%, calc(3*100%/5) 100%, calc(4*100%/5) 100%, calc(5*100%/5) 0%
+  }
+
+  83.33% {
+    background-position: calc(0*100%/5) 0%, calc(1*100%/5) 100%, calc(2*100%/5) 0%, calc(3*100%/5) 100%, calc(4*100%/5) 0%, calc(5*100%/5) 0%
+  }
+
+  100% {
+    background-position: calc(0*100%/5) 0%, calc(1*100%/5) 100%, calc(2*100%/5) 0%, calc(3*100%/5) 100%, calc(4*100%/5) 0%, calc(5*100%/5) 100%
+  }
 }

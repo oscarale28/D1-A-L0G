@@ -1,4 +1,4 @@
-import { useSidebar } from '../lib/providers/SidebarProvider'
+import { useSidebar } from "@/lib/providers/SidebarProvider"
 
 const Backdrop = () => {
   const { isOpen } = useSidebar()

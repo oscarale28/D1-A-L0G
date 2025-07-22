@@ -1,4 +1,4 @@
-import type { Character } from "../App"
+import type { Character } from "@/lib/types"
 
 interface ChatHeaderProps {
   character: Character | null
@@ -12,20 +12,18 @@ const ChatHeader = ({ character }: ChatHeaderProps) => {
   return (
     <div className="flex items-center gap-x-3 p-4 pt-8 bg-cyan-900/20 border-b border-cyan-900/30">
       <div className="relative">
-        <div className="w-10 h-10 aspect-square rounded-full bg-cyan-900 flex items-center justify-center">
-          <img
-            src={character.image}
-            alt={character.name}
-            className="w-8 h-8 rounded-full object-cover"
-          />
-        </div>
+        <img
+          src={character.imageUrl}
+          alt={character.name}
+          className="w-8 h-8 rounded-full object-cover"
+        />
       </div>
       <div className="flex-1">
         <div className="flex items-center gap-x-2">
           <h2 className="text-lg font-bold text-cyan-500">{character.name}</h2>
         </div>
         <div className="flex items-center gap-x-1">
-          <div
+          {/**<div
             className={`w-2 h-2 ${character.status === 'online'
               ? 'bg-green-400'
               : 'bg-yellow-400'
@@ -39,7 +37,7 @@ const ChatHeader = ({ character }: ChatHeaderProps) => {
             : 'text-yellow-400'
             }`}>
             {character.status}
-          </span>
+          </span>**/}
         </div>
       </div>
     </div>
