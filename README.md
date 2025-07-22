@@ -13,6 +13,10 @@ El usuario puede seleccionar entre diferentes bots, y mantener conversaciones in
 - **Demostrar el uso de modelos de lenguaje con personalización de personalidad** usando prompts específicos por bot.
 - **Explorar el diseño y la integración de chatbots** en una interfaz web moderna y responsiva.
 
+Este proyecto utiliza **Firebase** como backend principal para la autenticación de usuarios y el almacenamiento de datos de chats y mensajes. Gracias a Firebase, los usuarios pueden autenticarse de forma anónima en la aplicación y tener a su disponibilidad los 4 bots disponibles: **Darth Vader**, **R2-D2**, **C-3PO** y **el Maestro Yoda**.
+
 ---
 
-Este proyecto mezcla creatividad, desarrollo frontend y uso de IA para ofrecer una experiencia divertida y técnica a la vez.
+## ❗ Alcances y limitaciones
+
+Actualmente, el proyecto tiene un alcance de solamente envío y almacenamiento de mensajes **por parte del usuario**. Debido a problemas con el despliegue de la Firebase Function dedicada a la generación de respuestas con OpenAI, la aplicación no puede generar respuestas automáticas de los bots.
