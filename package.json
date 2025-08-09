@@ -16,6 +16,7 @@
     "@ai-sdk/openai": "^2.0.8",
     "@tailwindcss/vite": "^4.1.11",
     "@tanstack/react-query": "^5.83.0",
+    "@vercel/node": "^5.3.11",
     "ai": "^5.0.8",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",

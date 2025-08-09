@@ -1,18 +1,19 @@
 import { openai } from '@ai-sdk/openai';
 import { convertToModelMessages, streamText, UIMessage } from 'ai';
+import { VercelRequest, VercelResponse } from '@vercel/node';
 import { z } from 'zod';
 
 // Configuración máxima para funciones serverless de Vercel
-export const maxDuration = 60;
+export const config = {
+    runtime: 'nodejs@22',
+    maxDuration: 60
+};
 
 
-export default async function handler(request: Request) {
+export default async function handler(req: VercelRequest, res: VercelResponse) {
     // Solo permitir POST requests
-    if (request.method !== 'POST') {
-        return new Response('Method not allowed', {
-            status: 405,
-            headers: { 'Allow': 'POST' }
-        });
+    if (req.method !== 'POST') {
+        return res.status(405).json({ error: 'Method not allowed' });
     }
 
     try {
@@ -20,11 +21,11 @@ export default async function handler(request: Request) {
         const openaiApiKey = process.env.OPENAI_API_KEY;
         if (!openaiApiKey) {
             console.error('OPENAI_API_KEY environment variable is not set');
-            return new Response('Server configuration error', { status: 500 });
+            return res.status(500).json({ error: 'Server configuration error' });
         }
 
         // Parsear y validar el body del request
-        const { messages }: { messages: UIMessage[] } = await request.json();
+        const { messages }: { messages: UIMessage[] } = req.body
 
 
         // Generar respuesta usando Vercel AI SDK
