@@ -28,16 +28,6 @@ const formatMessagesForAPI = (messages: Message[], userId: string) => {
 };
 
 /**
- * Determina la URL base según el entorno
- */
-const getBaseUrl = (): string => {
-    // En desarrollo, usar localhost. En producción, usar el hostname actual
-    return window.location.hostname === 'localhost'
-        ? 'http://localhost:3000'
-        : `https://${window.location.hostname}`;
-};
-
-/**
  * Procesa una línea del stream de datos
  */
 const processStreamLine = (line: string): string => {
@@ -96,7 +86,7 @@ export const generateCharacterResponse = async (
 ): Promise<string> => {
     try {
         const formattedMessages = formatMessagesForAPI(messages, userId);
-        const baseUrl = getBaseUrl();
+        const baseUrl = "https://d1-a-l0g.vercel.app";
 
         const requestBody: ChatAPIRequest = {
             messages: formattedMessages,
