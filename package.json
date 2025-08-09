@@ -1,4 +1,7 @@
 {
+  "engines": {
+    "node": "22.x"
+  },
   "name": "d1al0g",
   "private": true,
   "version": "0.0.0",
