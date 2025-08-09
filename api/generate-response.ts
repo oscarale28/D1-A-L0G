@@ -5,7 +5,7 @@ import { z } from 'zod';
 
 // Configuración máxima para funciones serverless de Vercel
 export const config = {
-    runtime: 'nodejs@22',
+    runtime: 'nodejs',
     maxDuration: 60
 };
 
