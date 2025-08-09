@@ -74,6 +74,73 @@ export const sendMessage = async (chatId: string, text: string, senderId: string
 };
 
 /**
+ * Genera y envía una respuesta automática del personaje
+ * Esta función reemplaza a la Firebase Cloud Function
+ */
+export const generateAndSendCharacterResponse = async (
+  chatId: string,
+  characterId: string,
+  userId: string
+): Promise<void> => {
+  try {
+    // 1. Obtener información del personaje
+    const characterDoc = await getDoc(doc(db, "characters", characterId));
+    const characterData = characterDoc.data() as Character;
+
+    if (!characterData?.prompt) {
+      console.error(`Character ${characterId} not found or missing prompt`);
+      return;
+    }
+
+    // 2. Obtener mensajes recientes del chat
+    const messagesCollection = collection(db, `chats/${chatId}/messages`);
+    const messagesQuery = query(messagesCollection, orderBy("timestamp", "desc"), limit(10));
+    const messagesSnapshot = await getDocs(messagesQuery);
+
+    const recentMessages = messagesSnapshot.docs
+      .map(doc => ({ id: doc.id, ...doc.data() } as Message))
+      .reverse(); // Ordenar cronológicamente
+
+    // 3. Generar respuesta usando la API de Vercel
+    let responseText: string;
+
+    try {
+      const { generateCharacterResponse } = await import("./ai-api");
+      responseText = await generateCharacterResponse(
+        recentMessages,
+        characterData.prompt,
+        userId
+      );
+    } catch (apiError) {
+      console.error('AI API failed, using fallback:', apiError);
+      const { generateFallbackResponse } = await import("./ai-api");
+      responseText = generateFallbackResponse(characterData.name);
+    }
+
+    // 4. Guardar la respuesta del personaje
+    if (responseText) {
+      const chatRef = doc(db, "chats", chatId);
+      const responseTimestamp = serverTimestamp();
+
+      await addDoc(messagesCollection, {
+        text: responseText,
+        senderId: characterId,
+        timestamp: responseTimestamp,
+      });
+
+      await updateDoc(chatRef, {
+        lastMessageText: responseText,
+        lastMessageTimestamp: responseTimestamp,
+        updatedAt: responseTimestamp,
+      });
+    }
+
+  } catch (error) {
+    console.error(`Error generating character response for chat ${chatId}:`, error);
+  }
+};
+
+/**
  * Crea un nuevo chat si no existe uno previo entre el usuario y el personaje.
  * Si ya existe, devuelve el chat existente.
  */

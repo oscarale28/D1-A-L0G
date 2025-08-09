@@ -1,4 +1,4 @@
-import { findOrCreateChat, sendMessage, type CombinedChatItem } from "../services/firestore";
+import { findOrCreateChat, sendMessage, generateAndSendCharacterResponse, type CombinedChatItem } from "../services/firestore";
 import type { Chat } from "../types";
 import { createContext, use, useEffect, useState, type ReactNode } from "react";
 import { useAuth } from "./AuthProvider";
@@ -51,8 +51,20 @@ export const ChatListProvider = ({ children }: { children: ReactNode }) => {
     try {
       // Send message to Firestore
       await sendMessage(currentChat.id, text, user.uid);
+
       // Clear optimistic update after server confirms
       clearOptimisticUpdate(currentCharacter.id);
+
+      // Generate character response (replaces Firebase Cloud Function)
+      // This runs in the background and doesn't block the UI
+      generateAndSendCharacterResponse(
+        currentChat.id,
+        currentCharacter.id,
+        user.uid
+      ).catch(error => {
+        console.error("Failed to generate character response:", error);
+      });
+
     } catch (err) {
       console.error("Failed to send message:", err);
       // Clear optimistic update on error

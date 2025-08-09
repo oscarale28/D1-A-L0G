@@ -23,6 +23,7 @@ const MessageHistory = ({ chatId, currentCharacter }: MessageHistoryProps) => {
 
   return (
     <>
+      {/* Empty chat history */}
       {currentCharacter && messages.length === 0 && (
         <div className="flex-1 flex items-center justify-center">
           <div className="text-center">
@@ -32,6 +33,7 @@ const MessageHistory = ({ chatId, currentCharacter }: MessageHistoryProps) => {
         </div>
       )}
 
+      {/* Message history */}
       {messages.length > 0 && (
         <div className="flex-1 overflow-y-auto px-10 pt-6 pb-10 space-y-4">
           {messages.map((msg: Message) => (
