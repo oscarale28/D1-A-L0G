@@ -1,30 +1,17 @@
 {
   "$schema": "https://json.schemastore.org/tsconfig",
-  "display": "D1-A-L0G App",
-  "_version": "7.0.0",
-
+  "display": "Vercel Functions",
   "compilerOptions": {
-    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
     "target": "ES2022",
-    "useDefineForClassFields": true,
-    "lib": ["ES2022", "DOM", "DOM.Iterable"],
     "module": "nodenext",
-    "skipLibCheck": true,
-
-    /* Bundler mode */
     "moduleResolution": "nodenext",
-    "allowImportingTsExtensions": true,
-    "verbatimModuleSyntax": true,
-    "moduleDetection": "force",
-    "noEmit": true,
-    "jsx": "react-jsx",
-
-    /* Linting */
+    "lib": ["ES2022"],
+    "skipLibCheck": true,
     "strict": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "erasableSyntaxOnly": true,
-    "noFallthroughCasesInSwitch": true,
-    "noUncheckedSideEffectImports": true
-  }
+    "noEmit": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true
+  },
+  "include": ["api/**/*"],
+  "exclude": ["src/**/*", "node_modules"]
 }

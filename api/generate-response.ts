@@ -1,6 +1,6 @@
 import { openai } from '@ai-sdk/openai';
-import { convertToModelMessages, streamText, UIMessage } from 'ai';
-import { VercelRequest, VercelResponse } from '@vercel/node';
+import { convertToModelMessages, streamText, type UIMessage } from 'ai';
+import { type VercelRequest, type VercelResponse } from '@vercel/node';
 import { z } from 'zod';
 
 // Configuración máxima para funciones serverless de Vercel
