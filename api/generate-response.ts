@@ -1,11 +1,11 @@
 import { openai } from '@ai-sdk/openai';
-import { ModelMessage, streamText } from 'ai';
+import { generateText, ModelMessage } from 'ai';
 import { VercelRequest, VercelResponse } from '@vercel/node';
 
 // Configuración máxima para funciones serverless de Vercel
 export const config = {
   runtime: 'nodejs',
-  maxDuration: 180
+  maxDuration: 10
 };
 
 
@@ -39,14 +39,24 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     }
 
 
+    // Configurar headers para CORS
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+
+
     // Generar respuesta usando Vercel AI SDK
-    const result = streamText({
+    const result = await generateText({
       model: openai("gpt-3.5-turbo"),
-      messages: messages as ModelMessage[]
+      messages: messages as ModelMessage[],
+      temperature: 0.7,
+      maxOutputTokens: 1024
     });
 
     // Retornar la respuesta como stream
-    return result.text;
+    return res.status(200).json({
+      response: result.text
+    });
 
   } catch (error) {
     console.error('💥 Error generating character response:', error);
