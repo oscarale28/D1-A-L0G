@@ -5,7 +5,7 @@ import { VercelRequest, VercelResponse } from '@vercel/node';
 // Configuración máxima para funciones serverless de Vercel
 export const config = {
   runtime: 'nodejs',
-  maxDuration: 60
+  maxDuration: 180
 };
 
 
