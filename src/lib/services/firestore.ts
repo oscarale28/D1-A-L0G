@@ -88,7 +88,7 @@ export const generateAndSendCharacterResponse = async (
 
     if (!characterData?.prompt) {
       console.error(`Character ${characterId} not found or missing prompt`);
-      return;
+      return
     }
 
     // 2. Obtener mensajes recientes del chat
@@ -144,13 +144,7 @@ export const generateAndSendCharacterResponse = async (
     } catch (apiError) {
       console.error('AI API failed, using fallback:', apiError);
       // Respuesta de fallback simple
-      const fallbackResponses = [
-        `*${characterData.name} medita en silencio*`,
-        `*${characterData.name} parece estar concentrado en la Fuerza*`,
-        `*${characterData.name} asiente pensativamente*`,
-        `Lo siento, algo ha perturbado mi conexión con la Fuerza...`,
-      ];
-      responseText = fallbackResponses[Math.floor(Math.random() * fallbackResponses.length)];
+      throw new Error('AI API failed');
     }
 
     // 5. Guardar la respuesta del personaje
@@ -173,8 +167,10 @@ export const generateAndSendCharacterResponse = async (
       console.log('✅ Character response sent:', responseText.substring(0, 50) + '...');
     }
 
+
   } catch (error) {
-    console.error(`Error generating character response for chat ${chatId}:`, error);
+    console.error("Error generating character response");
+    throw error;
   }
 };
 

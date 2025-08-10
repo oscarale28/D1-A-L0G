@@ -7,6 +7,7 @@ import { useAuth } from './lib/providers/AuthProvider';
 import WelcomeScreen from './components/auth/WelcomeScreen';
 import { CharacterProvider } from './lib/providers/CharacterProvider';
 import { ChatListProvider } from './lib/providers/ChatListProvider';
+import { toast, Toaster } from 'sonner';
 
 function App() {
   const { user, loading } = useAuth();
@@ -35,6 +36,11 @@ function App() {
           </div>
         </ChatListProvider>
       </CharacterProvider>
+      <Toaster toastOptions={{
+        classNames: {
+          error: "bg-red-500/50! text-white! border-none!",
+        },
+      }} />
     </SidebarProvider>
   );
 }

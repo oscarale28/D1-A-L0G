@@ -34,7 +34,7 @@ const ChatContainer = () => {
             <div className="progress-bar" />
           </div>
         ) : (
-          currentChat && <MessageHistory chatId={currentChat.id} currentCharacter={currentCharacter} />
+          currentChat && <MessageHistory currentCharacter={currentCharacter} />
         )}
       </div>
       <MessageInput

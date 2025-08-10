@@ -7,10 +7,7 @@ export interface Character {
   imageUrl: string;
   prompt: string;
   color?: string;
-  status?: CharacterStatus;
 }
-
-export type CharacterStatus = 'online' | 'away' | 'busy' | 'offline';
 
 export interface Chat {
   id: string;
@@ -27,4 +24,5 @@ export interface Message {
   senderId: string;
   text: string;
   timestamp: Timestamp;
+  isTemporary?: boolean;
 }
