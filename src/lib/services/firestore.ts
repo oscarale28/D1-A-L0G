@@ -1,8 +1,7 @@
-
 import { collection, query, where, getDocs, doc, getDoc, addDoc, serverTimestamp, orderBy, limit, updateDoc, Timestamp } from "firebase/firestore";
 import { db, auth } from "../firebase";
 import { type Character, type Chat, type Message } from "../types";
-
+import { ModelMessage } from "ai";
 // --- Servicios ---
 
 /**
@@ -101,23 +100,60 @@ export const generateAndSendCharacterResponse = async (
       .map(doc => ({ id: doc.id, ...doc.data() } as Message))
       .reverse(); // Ordenar cronológicamente
 
-    // 3. Generar respuesta usando la API de Vercel
+    // 3. Convertir mensajes de Firestore al formato ModelMessage
+    const modelMessages: ModelMessage[] = [
+      // Agregar el prompt del personaje como mensaje del sistema
+      {
+        role: 'system',
+        content: characterData.prompt
+      },
+      // Convertir los mensajes del chat
+      ...recentMessages.map(msg => ({
+        role: msg.senderId === userId ? 'user' as const : 'assistant' as const,
+        content: msg.text || ''
+      }))
+    ];
+
+    console.log('🤖 Sending to API:', {
+      messagesCount: modelMessages.length,
+      characterName: characterData.name
+    });
+
+    // 4. Generar respuesta usando la API de Vercel
     let responseText: string;
+    const baseUrl = "https://d1-a-l0g.vercel.app";
 
     try {
-      const { generateCharacterResponse } = await import("./ai-api");
-      responseText = await generateCharacterResponse(
-        recentMessages,
-        characterData.prompt,
-        userId
-      );
+      const response = await fetch(`${baseUrl}/api/generate-response`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ messages: modelMessages })
+      });
+
+      if (!response.ok) {
+        const errorData = await response.text();
+        console.error('❌ API Error response:', errorData);
+        throw new Error(`API call failed: ${response.status} - ${errorData}`);
+      }
+
+      const data = await response.json();
+      responseText = data.response || '';
+
     } catch (apiError) {
       console.error('AI API failed, using fallback:', apiError);
-      const { generateFallbackResponse } = await import("./ai-api");
-      responseText = generateFallbackResponse(characterData.name);
+      // Respuesta de fallback simple
+      const fallbackResponses = [
+        `*${characterData.name} medita en silencio*`,
+        `*${characterData.name} parece estar concentrado en la Fuerza*`,
+        `*${characterData.name} asiente pensativamente*`,
+        `Lo siento, algo ha perturbado mi conexión con la Fuerza...`,
+      ];
+      responseText = fallbackResponses[Math.floor(Math.random() * fallbackResponses.length)];
     }
 
-    // 4. Guardar la respuesta del personaje
+    // 5. Guardar la respuesta del personaje
     if (responseText) {
       const chatRef = doc(db, "chats", chatId);
       const responseTimestamp = serverTimestamp();
@@ -133,6 +169,8 @@ export const generateAndSendCharacterResponse = async (
         lastMessageTimestamp: responseTimestamp,
         updatedAt: responseTimestamp,
       });
+
+      console.log('✅ Character response sent:', responseText.substring(0, 50) + '...');
     }
 
   } catch (error) {
@@ -204,16 +242,16 @@ export const getCombinedChatList = async (userId: string): Promise<CombinedChatI
       const timeA = a.chat?.updatedAt?.toDate ? a.chat.updatedAt.toDate().getTime() : 0;
       const timeB = b.chat?.updatedAt?.toDate ? b.chat.updatedAt.toDate().getTime() : 0;
 
-      // Prioritize items with a chat (more recent activity)
-      if (timeA === 0 && timeB !== 0) return 1; // a (no chat) comes after b (has chat)
-      if (timeA !== 0 && timeB === 0) return -1; // a (has chat) comes before b (no chat)
+      // Priorizar items con un chat (más actividad reciente)
+      if (timeA === 0 && timeB !== 0) return 1; // a (sin chat) va después de b (con chat)
+      if (timeA !== 0 && timeB === 0) return -1; // a (con chat) va antes de b (sin chat)
 
-      // If both have chats, sort by timestamp (newest first)
+      // Si ambos tienen chats, ordenar por timestamp (más nuevo primero)
       if (timeA !== 0 && timeB !== 0) {
         return timeB - timeA;
       }
 
-      // If neither has a chat, sort by character name
+      // Si ninguno tiene chat, ordenar por nombre del personaje
       return a.character.name.localeCompare(b.character.name);
     });
 
